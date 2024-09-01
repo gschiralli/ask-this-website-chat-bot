@@ -31,7 +31,7 @@ const LandingPage = () => {
             onChange={(e) => setUrl(e.target.value)}
             className="flex-grow"
           />
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" className="px-10">
             Start Chatting
           </Button>
         </div>
