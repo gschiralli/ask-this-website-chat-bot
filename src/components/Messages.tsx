@@ -1,12 +1,25 @@
 import { Message as TMessage } from "ai/react";
 import { Message } from "./Message";
 import { MessageSquare } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 interface MessagesProps {
   messages: TMessage[];
 }
 
 export const Messages = ({ messages }: MessagesProps) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // Scroll to bottom whenever a new message chunk arrives
+  useEffect(() => {
+    console.log("Messages updated", messages); // Debugging: Check how often messages are updated
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div className="flex max-h-[calc(100vh-3.5rem-7rem)] flex-1 flex-col overflow-y-auto">
       {messages.length ? (
@@ -28,6 +41,7 @@ export const Messages = ({ messages }: MessagesProps) => {
           </p>
         </div>
       )}
+      <div ref={messagesEndRef} />
     </div>
   );
 };

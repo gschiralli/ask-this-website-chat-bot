@@ -1,16 +1,18 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, Input } from "@nextui-org/react";
+import { Button, Input, Spinner } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 
 const LandingPage = () => {
   const [url, setUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // New state for loading spinner
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (url) {
+      setIsLoading(true); // Set loading state to true
       router.push(`/${encodeURIComponent(url)}`);
     }
   };
@@ -30,10 +32,17 @@ const LandingPage = () => {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="flex-grow"
+            required
           />
-          <Button type="submit" color="primary" className="px-10">
-            Start Chatting
-          </Button>
+          {isLoading ? (
+            <Button disabled className="px-10">
+              <Spinner /> {/* Display spinner */}
+            </Button>
+          ) : (
+            <Button type="submit" color="primary" className="px-10">
+              Start Chatting
+            </Button>
+          )}
         </div>
       </form>
       <div className="mt-12 text-zinc-400">

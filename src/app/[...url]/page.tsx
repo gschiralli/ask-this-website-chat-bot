@@ -10,11 +10,11 @@ interface PageProps {
 }
 
 function reconstructUrl({ url }: { url: string[] }) {
-  const decodededComponents = url.map((component) =>
+  const decodedComponents = url.map((component) =>
     decodeURIComponent(component)
   );
 
-  return decodededComponents.join("/");
+  return decodedComponents.join("//");
 }
 
 const Page = async ({ params }: PageProps) => {
@@ -37,13 +37,12 @@ const Page = async ({ params }: PageProps) => {
   });
 
   if (!isAlreadyIndexed) {
-    //Add to vector db
     await ragChat.context.add({
       type: "html",
       source: reconstructedUrl,
       config: { chunkOverlap: 50, chunkSize: 200 },
     });
-    //Cache url in redis db
+
     await redis.sadd("indexed-urls", reconstructedUrl);
   }
 
